@@ -1,9 +1,7 @@
 # Renewly
 
 > A modern SaaS platform for managing digital subscriptions, recurring bills, and digital purchases.
-
-![Logo Placeholder](./public/logo-placeholder.png)
-
+![Renewly Logo](./public/logo.png)
 ## Overview
 Renewly helps users manage subscriptions (Netflix, Prime Video, Spotify, ChatGPT, etc.), track recurring bills, monitor spending, receive renewal reminders, and track permanent digital purchases from platforms like Steam, Epic Games, PlayStation, and Xbox.
 
