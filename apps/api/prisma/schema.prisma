@@ -1,0 +1,209 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+enum Currency {
+  USD
+  EUR
+  GBP
+  INR
+  CAD
+  AUD
+}
+
+enum BillingCycle {
+  MONTHLY
+  YEARLY
+  QUARTERLY
+  WEEKLY
+  LIFETIME
+}
+
+enum SubscriptionStatus {
+  ACTIVE
+  CANCELED
+  PAUSED
+  PAST_DUE
+}
+
+enum ReminderType {
+  EMAIL
+  PUSH
+  SMS
+  IN_APP
+}
+
+enum PaymentMethodType {
+  CREDIT_CARD
+  PAYPAL
+  BANK_TRANSFER
+  CRYPTO
+}
+
+enum ProviderType {
+  ENTERTAINMENT
+  SOFTWARE
+  UTILITY
+  GAMING
+  OTHER
+}
+
+model User {
+  id        String    @id @default(uuid())
+  email     String    @unique
+  name      String?
+  role      Role      @default(USER)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  subscriptions  Subscription[]
+  purchases      Purchase[]
+  reminders      Reminder[]
+  paymentMethods PaymentMethod[]
+
+  @@index([deletedAt])
+  @@index([createdAt])
+}
+
+model Category {
+  id          String   @id @default(uuid())
+  name        String   @unique
+  slug        String   @unique
+  description String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  providers     Provider[]
+  subscriptions Subscription[]
+  purchases     Purchase[]
+}
+
+model Provider {
+  id         String       @id @default(uuid())
+  name       String
+  slug       String       @unique
+  type       ProviderType @default(OTHER)
+  categoryId String
+  iconUrl    String?
+  websiteUrl String?
+  billingUrl String?
+  createdAt  DateTime     @default(now())
+  updatedAt  DateTime     @updatedAt
+
+  category      Category       @relation(fields: [categoryId], references: [id], onDelete: Restrict)
+  subscriptions Subscription[]
+  purchases     Purchase[]
+
+  @@index([categoryId])
+}
+
+model PaymentMethod {
+  id          String            @id @default(uuid())
+  userId      String
+  type        PaymentMethodType
+  provider    String? // e.g. "Visa", "Mastercard", "Paypal"
+  lastFour    String?
+  expiryMonth Int?
+  expiryYear  Int?
+  isDefault   Boolean           @default(false)
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt
+  deletedAt   DateTime?
+
+  user          User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  subscriptions Subscription[]
+
+  @@index([userId])
+  @@index([deletedAt])
+}
+
+model Subscription {
+  id              String  @id @default(uuid())
+  userId          String
+  providerId      String
+  categoryId      String?
+  paymentMethodId String?
+
+  name     String
+  amount   Decimal            @db.Decimal(10, 2)
+  currency Currency           @default(USD)
+  cycle    BillingCycle       @default(MONTHLY)
+  status   SubscriptionStatus @default(ACTIVE)
+
+  startDate       DateTime
+  nextBillingDate DateTime?
+  cancelDate      DateTime?
+
+  notes     String?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  user          User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  provider      Provider       @relation(fields: [providerId], references: [id], onDelete: Restrict)
+  category      Category?      @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  paymentMethod PaymentMethod? @relation(fields: [paymentMethodId], references: [id], onDelete: SetNull)
+  reminders     Reminder[]
+
+  @@index([userId])
+  @@index([providerId])
+  @@index([categoryId])
+  @@index([nextBillingDate])
+  @@index([status])
+  @@index([deletedAt])
+}
+
+model Purchase {
+  id         String  @id @default(uuid())
+  userId     String
+  providerId String
+  categoryId String?
+
+  name         String
+  amount       Decimal  @db.Decimal(10, 2)
+  currency     Currency @default(USD)
+  purchaseDate DateTime @default(now())
+
+  notes     String?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  user     User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  provider Provider  @relation(fields: [providerId], references: [id], onDelete: Restrict)
+  category Category? @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+
+  @@index([userId])
+  @@index([providerId])
+  @@index([categoryId])
+  @@index([deletedAt])
+}
+
+model Reminder {
+  id             String       @id @default(uuid())
+  userId         String
+  subscriptionId String
+  type           ReminderType @default(EMAIL)
+  daysBefore     Int          @default(3) // Remind 3 days before nextBillingDate
+  isActive       Boolean      @default(true)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user         User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  subscription Subscription @relation(fields: [subscriptionId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([subscriptionId])
+}
