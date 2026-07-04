@@ -3,6 +3,7 @@ import { AuthProvider } from './features/auth/context/AuthContext'
 import { ProtectedRoute } from './features/auth/components/ProtectedRoute'
 import { LoginPage } from './features/auth/pages/LoginPage'
 import { RegisterPage } from './features/auth/pages/RegisterPage'
+import { ProvidersPage } from './features/providers/ProvidersPage'
 import './App.css'
 import { useState } from 'react'
 
@@ -33,6 +34,7 @@ function App() {
           {/* Protected Routes */}
           <Route element={<ProtectedRoute />}>
             <Route path="/" element={<Dashboard />} />
+            <Route path="/providers" element={<ProvidersPage />} />
             {/* Add more protected routes here */}
           </Route>
         </Routes>

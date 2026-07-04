@@ -22,8 +22,9 @@ export const LoginPage = () => {
     try {
       await login({ email, password });
       navigate(from, { replace: true });
-    } catch (err: any) {
-      setError(err.response?.data?.message || 'Failed to login');
+    } catch (err: unknown) {
+      const error = err as { response?: { data?: { message?: string } } };
+      setError(error.response?.data?.message || 'Failed to login');
     } finally {
       setIsSubmitting(false);
     }

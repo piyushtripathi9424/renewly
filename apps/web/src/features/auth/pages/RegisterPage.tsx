@@ -20,11 +20,12 @@ export const RegisterPage = () => {
     try {
       await register({ name, email, password });
       navigate('/');
-    } catch (err: any) {
-      if (err.response?.data?.errors) {
-        setError(err.response.data.errors.map((e: any) => e.message).join(', '));
+    } catch (err: unknown) {
+      const error = err as { response?: { data?: { errors?: { message: string }[], message?: string } } };
+      if (error.response?.data?.errors) {
+        setError(error.response.data.errors.map(e => e.message).join(', '));
       } else {
-        setError(err.response?.data?.message || 'Failed to register');
+        setError(error.response?.data?.message || 'Failed to register');
       }
     } finally {
       setIsSubmitting(false);

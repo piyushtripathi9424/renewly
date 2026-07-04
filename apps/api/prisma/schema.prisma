@@ -96,16 +96,22 @@ model Category {
 }
 
 model Provider {
-  id         String       @id @default(uuid())
-  name       String
-  slug       String       @unique
-  type       ProviderType @default(OTHER)
-  categoryId String
-  iconUrl    String?
-  websiteUrl String?
-  billingUrl String?
-  createdAt  DateTime     @default(now())
-  updatedAt  DateTime     @updatedAt
+  id          String       @id @default(uuid())
+  name        String
+  slug        String       @unique
+  description String?
+  logoUrl     String?
+  websiteUrl  String?
+  billingUrl  String?
+  type        ProviderType @default(OTHER)
+  categoryId  String
+  color       String?
+  tags        String[]
+  popularity  Int          @default(0)
+  verified    Boolean      @default(false)
+  active      Boolean      @default(true)
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
 
   category      Category       @relation(fields: [categoryId], references: [id], onDelete: Restrict)
   subscriptions Subscription[]
