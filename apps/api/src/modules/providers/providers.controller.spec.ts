@@ -1,11 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { ProvidersController } from './providers.controller';
 import { ProvidersService } from './providers.service';
-import { UserRole } from '@prisma/client';
-
 describe('ProvidersController', () => {
   let controller: ProvidersController;
-  let service: ProvidersService;
 
   const mockService = {
     findAll: jest.fn(),
@@ -25,7 +22,6 @@ describe('ProvidersController', () => {
     }).compile();
 
     controller = module.get<ProvidersController>(ProvidersController);
-    service = module.get<ProvidersService>(ProvidersService);
   });
 
   it('should be defined', () => {

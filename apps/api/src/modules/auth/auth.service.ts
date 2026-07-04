@@ -170,7 +170,7 @@ export class AuthService {
   }
 
   excludeHash(user: User): Partial<User> {
-    const { passwordHash, refreshTokenHash, ...userWithoutHash } = user;
-    return userWithoutHash;
+    const { passwordHash: _ph, refreshTokenHash: _rh, ...userWithoutSensitive } = user;
+    return userWithoutSensitive;
   }
 }
