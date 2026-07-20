@@ -1,4 +1,4 @@
-import React from 'react';
+
 import { SubscriptionList } from './SubscriptionList';
 import { StatisticsCards } from './StatisticsCards';
 import { UpcomingRenewalsWidget } from './UpcomingRenewalsWidget';

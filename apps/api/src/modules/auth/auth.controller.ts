@@ -5,8 +5,8 @@ import { ZodValidationPipe } from '../../common/pipes/zod-validation.pipe';
 import { Public } from './decorators/public.decorator';
 import { CurrentUser } from './decorators/current-user.decorator';
 import { JwtRefreshGuard } from './guards/jwt-refresh.guard';
-import { User } from '@prisma/client';
-import { Request, Response } from 'express';
+import type { User } from '@prisma/client';
+import type { Request, Response } from 'express';
 
 @Controller('auth')
 export class AuthController {
