@@ -1,9 +1,9 @@
 import React, { useCallback } from 'react';
-import { ProviderGrid } from '../components/ProviderGrid';
-import { ProviderSearch } from '../components/ProviderSearch';
-import { CategoryFilters } from '../components/CategoryFilters';
-import { useProviders } from '../hooks/useProviders';
-import { Provider } from '../types';
+import { ProviderGrid } from './components/ProviderGrid';
+import { ProviderSearch } from './components/ProviderSearch';
+import { CategoryFilters } from './components/CategoryFilters';
+import { useProviders } from './hooks/useProviders';
+import { Provider } from './types';
 import { Loader2 } from 'lucide-react';
 
 export const ProvidersPage: React.FC = () => {
