@@ -9,6 +9,7 @@ import { UsersModule } from './modules/users/users.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { ProvidersModule } from './modules/providers/providers.module';
 import { JwtAuthGuard } from './modules/auth/guards/jwt-auth.guard';
+import { SubscriptionsModule } from './modules/subscriptions/subscriptions.module';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { JwtAuthGuard } from './modules/auth/guards/jwt-auth.guard';
     UsersModule,
     AuthModule,
     ProvidersModule,
+    SubscriptionsModule,
   ],
   controllers: [AppController],
   providers: [

@@ -20,12 +20,12 @@ export class ProvidersController {
   constructor(private readonly providersService: ProvidersService) {}
 
   @Get()
-  findAll(@Query(new ZodValidationPipe(SearchProviderSchema)) query: SearchProviderInput) {
+  findAll(@Query(new ZodValidationPipe(SearchProviderSchema)) query: any) {
     return this.providersService.findAll(query);
   }
 
   @Get('search')
-  search(@Query(new ZodValidationPipe(SearchProviderSchema)) query: SearchProviderInput) {
+  search(@Query(new ZodValidationPipe(SearchProviderSchema)) query: any) {
     return this.providersService.findAll(query);
   }
 
@@ -41,7 +41,7 @@ export class ProvidersController {
 
   @Post()
   @Roles(UserRole.ADMIN)
-  create(@Body(new ZodValidationPipe(CreateProviderSchema)) createProviderDto: CreateProviderInput) {
+  create(@Body(new ZodValidationPipe(CreateProviderSchema)) createProviderDto: any) {
     return this.providersService.create(createProviderDto);
   }
 
@@ -49,7 +49,7 @@ export class ProvidersController {
   @Roles(UserRole.ADMIN)
   update(
     @Param('id') id: string,
-    @Body(new ZodValidationPipe(UpdateProviderSchema)) updateProviderDto: UpdateProviderInput,
+    @Body(new ZodValidationPipe(UpdateProviderSchema)) updateProviderDto: any,
   ) {
     return this.providersService.update(id, updateProviderDto);
   }
