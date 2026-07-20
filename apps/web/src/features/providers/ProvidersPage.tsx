@@ -3,7 +3,7 @@ import { ProviderGrid } from './components/ProviderGrid';
 import { ProviderSearch } from './components/ProviderSearch';
 import { CategoryFilters } from './components/CategoryFilters';
 import { useProviders } from './hooks/useProviders';
-import { Provider } from './types';
+import type { Provider } from './types';
 import { Loader2 } from 'lucide-react';
 
 export const ProvidersPage: React.FC = () => {
@@ -44,7 +44,7 @@ export const ProvidersPage: React.FC = () => {
 
       <div className="mb-8 space-y-4">
         <ProviderSearch onSearch={handleSearch} />
-        <CategoryFilters selectedCategory={params.category} onSelectCategory={handleCategorySelect} />
+        <CategoryFilters selectedCategory={params.category as string | undefined} onSelectCategory={handleCategorySelect} />
       </div>
 
       {error && (
